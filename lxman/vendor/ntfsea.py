@@ -6,7 +6,7 @@ import struct
 import ctypes
 import tarfile
 import platform
-
+from importlib.machinery import EXTENSION_SUFFIXES
 
 # class for manipulating mode bits stored in lxattrb
 
@@ -248,6 +248,16 @@ class ntfsea:
 	pbytes = lambda str: ctypes.create_string_buffer(str, len(str))
 
 	@staticmethod
+	def find_dll_path():
+		for suffix in EXTENSION_SUFFIXES:
+			suffix = suffix.replace(".pyd", ".dll")
+			path = os.path.dirname(__file__)
+			dll_path = os.path.join(path, "ntfsea" + suffix)
+			if os.path.exists(dll_path):
+				return dll_path
+		raise OSError("Couldn't find ntfsea.dll")
+
+	@staticmethod
 	def init():
 		"""
 		Initializes the ntfsea library.
@@ -259,9 +269,7 @@ class ntfsea:
 			else:
 				loader = ctypes.CDLL
 
-
-
-			ntfsea.lib = loader(os.path.join(os.path.dirname(__file__), 'ntfsea_x64.dll'))
+			ntfsea.lib = loader(ntfsea.find_dll_path())
 			ntfsea.lib.GetEaList.restype = ctypes.POINTER(ntfsea_EaList)
 			ntfsea.lib.GetEa.restype     = ctypes.POINTER(ntfsea_Ea)
 			ntfsea.lib.WriteEa.restype   = ctypes.c_int

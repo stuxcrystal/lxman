@@ -1,5 +1,6 @@
 import sys
 import click
+import colorama
 
 from lxman.cli import config
 from lxman.cli import manage
@@ -107,3 +108,8 @@ def destroy(ctx, distribution):
     with distribution:
         ctx.invoke(manage.clean, distribution=distribution, root=True)
     distribution.delete()
+
+
+def main():
+    colorama.init()
+    cli()
