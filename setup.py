@@ -65,7 +65,4 @@ setup(
         'click',
         'requests'
     ],
-    setup_requires = [
-        'Cython'
-    ]
 )

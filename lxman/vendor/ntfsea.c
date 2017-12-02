@@ -19,6 +19,7 @@
 #include <stdio.h>
 
 #define DLL_EXPORT __declspec(dllexport)
+#define WINDLL     __stdcall
 
 #define MAX_LIST_LEN 4096
 #define MAX_EA_VALUE 256
@@ -146,7 +147,7 @@ HANDLE GetFileHandle(PWSTR DosFileName, BOOL Write, PFILE_FULL_EA_INFORMATION Ea
  *
  * \return List of extended attributes or an empty list on error.
  */
-DLL_EXPORT struct EaList* GetEaList(PWSTR FileName)
+DLL_EXPORT struct EaList* WINDLL GetEaList(PWSTR FileName)
 {
 	NTSTATUS Status = 0;
 	HANDLE FileHandle;
@@ -205,7 +206,7 @@ DLL_EXPORT struct EaList* GetEaList(PWSTR FileName)
  *
  * \return Extended attribute information or empty structure on error.
  */
-DLL_EXPORT struct Ea* GetEa(PWSTR FileName, PSTR EaName)
+DLL_EXPORT struct Ea* WINDLL GetEa(PWSTR FileName, PSTR EaName)
 {
 	NTSTATUS Status = 0;
 	HANDLE FileHandle;
@@ -264,7 +265,7 @@ DLL_EXPORT struct Ea* GetEa(PWSTR FileName, PSTR EaName)
  *
  * \return Number of bytes written (should match EaValueLength) or -1 on failure.
  */
-DLL_EXPORT LONG32 WriteEa(PWSTR FileName, PSTR EaName, PSTR EaValue, ULONG32 EaValueLength)
+DLL_EXPORT LONG32 WINDLL WriteEa(PWSTR FileName, PSTR EaName, PSTR EaValue, ULONG32 EaValueLength)
 {
 	HANDLE FileHandle;
 	ULONG EaNameLength = strlen(EaName);
